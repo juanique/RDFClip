@@ -201,6 +201,7 @@ function hideFeedback(){
 }
 
 
+<<<<<<< HEAD
 function getParams(uri){
     return jQuery.param({
             uri : uri,
@@ -210,13 +211,12 @@ function getParams(uri){
     });
 }
 
-function formatResource(row, res, resLabel, prop, rdfa){
+function formatResource(row, res, resLabel, prop){
     var userLabel = row[res].value;
     if(prop != undefined){
         property = RDF.property(row[prop].value);
         userLabel = property.userFormat(userLabel);
     }
-    rdfa = rdfa || false;
 
     var params = getParams(row[res].value);
     var tag = row[res].isUri()? "A title='"+row[res]+"' href='"+row[res].value+"'":"SPAN";
