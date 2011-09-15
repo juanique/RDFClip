@@ -11,6 +11,8 @@ import urllib
 import json
 import settings
 
+from base.rdf import CLIP, RDFS
+
 
 #@login_required
 def home(request):
@@ -20,8 +22,24 @@ def home(request):
     return render_to_response('rdfadmin/query.html', template_vars)
 
 def explore(request,file_hash):
+    sparql  = """
+            prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+            SELECT DISTINCT ?p ?pl ?o ?ol ?range WHERE {
+                <%s> ?p ?o . 
+                ?p rdfs:range ?range . 
+                OPTIONAL { ?p <%s> ?pl }
+                OPTIONAL { ?o <%s> ?ol }
+            }
+            ORDER BY ?p
+            """ % (CLIP[file_hash],RDFS['label'], RDFS['label'])
+
+    proxy = get_sparql_proxy()
+    resource_data  = proxy.query(sparql,output='ResultSet')
+
     template_vars = RequestContext(request,{
         'sparql_endpoint' : settings.SPARQL_ENDPOINT_URL,
+        'resource_data' : resource_data
     })
     return render_to_response('rdfadmin/explore.html', template_vars)
 
