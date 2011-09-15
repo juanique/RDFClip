@@ -23,7 +23,7 @@ else
     if [ $1 = "mysql-create-db" ]; then
         read -p "MySQL root password? " pass
 
-        q="GRANT USAGE ON *.* TO '$dbuser'@'localhost';"
+        q="GRANT USAGE ON $dbname.* TO '$dbuser'@'localhost';"
         q0="DROP USER $dbuser@localhost;"
         q1="DROP DATABASE IF EXISTS $dbname;"
         q2="FLUSH PRIVILEGES;"

@@ -19,7 +19,7 @@ def home(request):
     })
     return render_to_response('rdfadmin/query.html', template_vars)
 
-def explore(request):
+def explore(request,file_hash):
     template_vars = RequestContext(request,{
         'sparql_endpoint' : settings.SPARQL_ENDPOINT_URL,
     })
