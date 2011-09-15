@@ -134,6 +134,7 @@ function getProxy(){
 
 function loadUri(uri){
     var sparql, graph, from;
+    return;
 
     jQuery("#searchResultsTable").hide();
     jQuery("#imgDiv").show();
@@ -201,7 +202,6 @@ function hideFeedback(){
 }
 
 
-<<<<<<< HEAD
 function getParams(uri){
     return jQuery.param({
             uri : uri,

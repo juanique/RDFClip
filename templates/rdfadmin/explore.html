@@ -25,14 +25,6 @@
                 <div id="imgDiv" style="display: none">
                     {% media img:Views/rdfadmin.loader.gif %}
                 </div>
-                <script id='propertiesTemplate' type='text/x-jquery-tmpl'>
-                    {% verbatim %}
-                    <TR class="propertyRow">
-                        <TH>{{html propertyName}}</TH>
-                        <TD>{{html propertyValue}}</TD>
-                    </TR>
-                    {% endverbatim %}
-                </script> 
                 <TABLE id="explorerTable">
                     <THEAD>
                         <TR class="headersRow">
@@ -42,14 +34,22 @@
                     </THEAD>
                     <TBODY>
                         {% for row in resource_data %}
-                            <TR class="newPropertyRow">
+                            <TR class="propertyRow">
                                 <TH>{% resource row p pl %}</TH>
                                 <TD>{% resource row o ol %}</TH>
-                                <!-- <INPUT type='text' emptyValue='Click to add' class='newPropertyInput'></TD> -->
                             </TR>
                         {% endfor %}
                     </TBODY>
                 </TABLE>
+
+                <script id='newPropertyTemplate' type='text/x-jquery-tmpl'>
+                    {% verbatim %}
+                    <TR class="newPropertyRow">
+                        <TH>{{html propertyName}}</TH>
+                        <TD><INPUT type='text' emptyValue='Click to add' class='newPropertyInput'></TD>
+                    </TR>
+                    {% endverbatim %}
+                </script> 
 
                 <script id='searchResultsTemplate' type='text/x-jquery-tmpl'>
                     {% verbatim %}
