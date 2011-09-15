@@ -22,26 +22,6 @@
         <div id="mainWrap">
 
             <div class="container">
-                <label>Endpoint:</label><input type="text" value="http://localhost:8890/sparql" id="inputEndpoint">
-                <label>Graph:</label><input type="text" value="" id="inputGraph">
-                <HR>
-
-                <table id="settingsTable">
-                    <tr>
-                        <td><label>Browse URI:</label></td>
-                        <td class="inputField"><input type="text" value="" id="inputUri"></td>
-                        <td><button onclick="loadUri(jQuery('#inputUri').val());">GO</button></td>
-                    </tr><tr>
-                        <td><label>Search Label:</label></td>
-                        <td class="inputField"><input type="text" value="" id="inputSearch"></td>
-                        <td><button onclick="search(jQuery('#inputSearch').val());">GO</button></td>
-                    </tr>
-
-                </table>
-                
-            </div>
-
-            <div class="container" id='resourceContainer'>
                 <div id="imgDiv" style="display: none">
                     {% media img:Views/rdfadmin.loader.gif %}
                 </div>
