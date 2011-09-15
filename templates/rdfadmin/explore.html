@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load verbatim_templatetag %}
 {% load media %}
+{% load resource %}
 
 {% block title %}RDF Data Explorer{% endblock %}
 
@@ -8,7 +9,6 @@
         {% media css:Components/DropDownList.base.css %}
         {% media css:Views/rdfadmin.explore.css %}
         <script type="text/javascript">
-            var proxyUrl = "{% url rdfadmin.views.proxy %}";
             var labelPredicate = "http://www.w3.org/2000/01/rdf-schema#label";
             var base_url = "";
             var insert_graph = "http://www.rdfclip.com/data";
@@ -33,22 +33,22 @@
                     </TR>
                     {% endverbatim %}
                 </script> 
-                <script id='newPropertyTemplate' type='text/x-jquery-tmpl'>
-                    {% verbatim %}
-                    <TR class="newPropertyRow">
-                        <TH>{{html propertyName}}</TH>
-                        <TD><INPUT type='text' emptyValue='Click to add' class='newPropertyInput'></TD>
-                    </TR>
-                    {% endverbatim %}
-                </script> 
-                <TABLE id="explorerTable" style = "display: none">
+                <TABLE id="explorerTable">
                     <THEAD>
                         <TR class="headersRow">
                             <TH class="propertyHeader">Property</TH>
                             <TH class="valueHeader">Value</TH>
                         </TR>
                     </THEAD>
-                    <TBODY></TBODY>
+                    <TBODY>
+                        {% for row in resource_data %}
+                            <TR class="newPropertyRow">
+                                <TH>{% resource row p pl %}</TH>
+                                <TD>{% resource row o ol %}</TH>
+                                <!-- <INPUT type='text' emptyValue='Click to add' class='newPropertyInput'></TD> -->
+                            </TR>
+                        {% endfor %}
+                    </TBODY>
                 </TABLE>
 
                 <script id='searchResultsTemplate' type='text/x-jquery-tmpl'>
