@@ -25,7 +25,7 @@
                 <div id="imgDiv" style="display: none">
                     {% media img:Views/rdfadmin.loader.gif %}
                 </div>
-                <TABLE id="explorerTable">
+                <TABLE id="explorerTable" about="{{resource_uri}}">
                     <THEAD>
                         <TR class="headersRow">
                             <TH class="propertyHeader">Property</TH>
@@ -36,7 +36,7 @@
                         {% for row in resource_data %}
                             <TR class="propertyRow">
                                 <TH>{% resource row p pl %}</TH>
-                                <TD>{% resource row o ol %}</TH>
+                                <TD>{% resource row o ol p %}</TH>
                             </TR>
                         {% endfor %}
                     </TBODY>

@@ -1,5 +1,6 @@
 from django import template
 from django.template import Template, Context
+from base.rdf import abbreviate
 import settings
 
 register = template.Library()
@@ -15,21 +16,18 @@ class ResourceNode(template.Node):
         row = self.row_variable.resolve(context)
         resource = row[self.resource_column]
     
-        local_context = {}
-        local_context['resource'] = resource.value
-        local_context['label'] = row.get(self.label_column, resource).value
+        context['resource'] = resource.value
+        context['label'] = row.get(self.label_column, resource).value
         if self.property_column:
-            local_context['property'] = row[self.property_column].value
+            context['property'] = abbreviate(row[self.property_column].value)
+        else:
+            try:
+                del context['property']
+            except KeyError:
+                pass
 
-        anchor = """ <A title='{{resource}}' 
-                        href='{{resource}}' 
-                        {% if property %}
-                            property='{{property}}'
-                        {% endif %}
-                     >
-                        
-                        {{label}}</A>
-                """
+
+        anchor = " <A title='{{resource}}' href='{{resource}}' {% if property %} rel='{{property}}' about='{{resource_uri}}' {% endif %} >{{label}}</A>"
 
         span = """<SPAN
                     {% if property %}
@@ -40,9 +38,8 @@ class ResourceNode(template.Node):
                """
 
         template = Template(anchor if resource.type =='uri' else span)
-        template = template.render(Context(local_context))
 
-        return Template(template).render(context)
+        return template.render(context)
 
 
 def resource_tag(parser, token):
