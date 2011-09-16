@@ -11,7 +11,7 @@ import urllib
 import json
 import settings
 
-from base.rdf import CLIP, RDFS
+from base.rdf import CLIP, RDFS, abbreviate
 
 
 #@login_required
@@ -39,7 +39,8 @@ def explore(request,file_hash):
 
     template_vars = RequestContext(request,{
         'sparql_endpoint' : settings.SPARQL_ENDPOINT_URL,
-        'resource_data' : resource_data
+        'resource_data' : resource_data,
+        'resource_uri' : abbreviate(CLIP[file_hash]),
     })
     return render_to_response('rdfadmin/explore.html', template_vars)
 
