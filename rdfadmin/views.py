@@ -72,4 +72,4 @@ def proxy(request):
     query_obj.save()
 
     proxy_obj = get_sparql_proxy();
-    return HttpResponse(proxy_obj.query(query, endpoint, output))
+    return HttpResponse(proxy_obj.query(query, endpoint, output, False))
