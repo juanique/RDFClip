@@ -27,6 +27,6 @@ VIRTUOSO_PASS = ""
 VIRTUOSO_INI = "/etc/virtuoso-opensource-6.1/virtuoso.ini"
 VIRTUOSO_WORK_DIR = ""
 VIRTUOSO_ENDPOINT_PORT = 8890
-VIRTUOSO_ENDPOINT = "%s:%d/sparql" % (VIRTUOSO_HOST, VIRTUOSO_ENDPOINT_PORT)
+VIRTUOSO_ENDPOINT = "http://%s:%d/sparql" % (VIRTUOSO_HOST, VIRTUOSO_ENDPOINT_PORT)
 DATA_GRAPH = "http://www.rdfclip.com/data"
 SCHEMA_GRAPH = "http://www.rdfclip.com/schema"

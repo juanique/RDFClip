@@ -9,34 +9,36 @@ from subprocess import call
 from rdflib import Graph, Namespace, Literal
 from scrapper.utils import open_url
 
-FILE = Namespace('http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#')
+NFO = Namespace('http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#')
 RDFS = Namespace('http://www.w3.org/2000/01/rdf-schema#')
 RDF = Namespace('http://www.w3.org/1999/02/22-rdf-syntax-ns#')
 CLIP = Namespace('http://www.rdfclip.com/resource/')
 CLIPS = Namespace('http://www.rdfclip.com/schema#')
+XMLS = Namespace('http://www.w3.org/2001/XMLSchema#')
 
 registered_namespaces = {
-        'file': FILE,
+        'nfo': NFO,
         'rdfs' : RDFS, 
         'rdf' : RDF,
         'clip' : CLIP,
         'clips' : CLIPS,
+        'xmls' : XMLS,
         }
 
 hachoir_mapping = {
     'description' : RDFS['comment'],
-    'duration' : FILE['duration'],
-    'width' : FILE['horizontalResolution'],
-    'height' : FILE['verticalResolution'],
-    'frame_rate' : FILE['frameRate'],
-    'bit_rate' : FILE['averageBitrate'],
+    'duration' : NFO['duration'],
+    'width' : NFO['horizontalResolution'],
+    'height' : NFO['verticalResolution'],
+    'frame_rate' : NFO['frameRate'],
+    'bit_rate' : NFO['averageBitrate'],
     'comment' : RDFS['comment'],
-    'compression' : FILE['codec'],
-    'nb_channel' : FILE['channels'],
+    'compression' : NFO['codec'],
+    'nb_channel' : NFO['channels'],
     'mime_type' : RDF['type'],
 
     #Classes by  mimetype
-    'video/x-msvideo' : FILE['Video'],
+    'video/x-msvideo' : NFO['Video'],
 }
 
 def abbreviate(uri):
@@ -44,7 +46,7 @@ def abbreviate(uri):
         ns_name = ns.encode()
         if uri[:len(ns_name)] == ns_name:
             return "%s:%s" % (prefix, uri[len(ns_name):])
-    raise Exception("Tried to abbreviate an URI from an unregistered namespace.")
+    raise Exception("Tried to abbreviate an URI from an unregistered namespace (%s)." % uri)
 
 class ResultValue:
 
@@ -105,10 +107,22 @@ class SparqlProxy:
     def __init__(self, default_endpoint='http://localhost:8890/sparql'):
         self.default_endpoint = default_endpoint
 
+        header_items = []
+        for prefix, ns in registered_namespaces.items():
+            ns_name = ns.encode()
+            header_items.append('prefix %s: <%s>' % (prefix, ns_name))
+
+        self.namespaces_header = '\n'.join(header_items)
+
+
     def get_url(self,query, endpoint, output):
         return "%s?query=%s&format=%s" % (endpoint, urllib.quote(query), output)
 
-    def query(self, query, endpoint=None, output='json'):
+    def query(self, query, endpoint=None, output='json', include_namespaces = True):
+        if include_namespaces:
+            query = "%s\n%s" % (self.namespaces_header, query)
+
+
         request_output = output
         if output == 'ResultSet':
             request_output = 'xml'
