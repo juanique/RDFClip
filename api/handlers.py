@@ -7,7 +7,6 @@ from base.connection import get_sparql_proxy
 from base.rdf import abbreviate, CLIP, RDFS
 from base.webservices import SimpleHandler
 from base.webservices import simple_handler_view
-
 import triplestore
 
 
@@ -18,7 +17,6 @@ class RDFTripleHandler(BaseHandler):
     def create(self, request, *args, **kwargs):
         if request.content_type:
             triplestore.insert(data)
-
 
 
 class ResourceHandler(SimpleHandler):
@@ -45,8 +43,6 @@ class ResourceHandler(SimpleHandler):
             output[pred] = { 'value' : obj, 'type' : ran }
 
         return output
-
-
 
 class ResourcePredicateHandler(SimpleHandler):
     allowed_methods = ('POST', 'GET')

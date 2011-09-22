@@ -42,4 +42,3 @@ def query(request,data):
 
 
     return proxy.query(sparql_template.render(context),output='json')
-
