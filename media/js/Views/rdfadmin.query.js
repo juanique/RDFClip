@@ -114,6 +114,48 @@ function loadQuery(q){
         jQuery('#query').val(q.query).trigger('change');
 }
 
+function getSuggestionsFromEndpoint(word, list){
+    getProxy().query({
+        format : 'json',
+        query  : 'SELECT ?resource, ?label WHERE {?resource <http://www.w3.org/2000/01/rdf-schema#label> ?label FILTER regex(?label, "^'+word.substring(1)+'","i") } GROUP BY ?resource LIMIT 10',
+        callback : function(r){
+            if(r.results.bindings){
+                var resultSet = RDF.getResultSet(r);
+                var opts = [];
+                var row;
+
+                while(row = resultSet.fetchRow()){
+                    opts.push({
+                        name : str(row.label),
+                        value : {label: str(row.label), uri : str(row.resource) }
+                    });
+                }
+                list.setOptions(opts);
+            }
+        }
+    });
+}
+
+function getSuggestionsFromServer(word, list){
+    word = word.replace(/^@/,'');
+    jQuery.ajax({
+        url : suggestions_url.replace(/match$/,word),
+        method: 'GET',
+        dataType: 'json',
+        success : function(r){
+            var opts = [];
+            for(var i = 0; i < r.length; i++){
+                opts.push({
+                    name : r[i].label,
+                    value : {label : r[i].label, uri : r[i].uri }
+                });
+            }
+            console.debug(opts);
+            list.setOptions(opts);
+        }
+    });
+}
+
 jQuery(document).ready(function(){
     jQuery("button").attr("disabled",true);
 
@@ -124,24 +166,7 @@ jQuery(document).ready(function(){
     magic.addInlineSuggest({
         trigger : '@',
         refreshList : function(word, list){
-            getProxy().query({
-                query  : 'SELECT ?resource, ?label WHERE {?resource <http://www.w3.org/2000/01/rdf-schema#label> ?label FILTER regex(?label, "^'+word.substring(1)+'","i") } GROUP BY ?resource LIMIT 10',
-                callback : function(r){
-                    if(r.results.bindings){
-                        var resultSet = RDF.getResultSet(r);
-                        var opts = [];
-                        var row;
-
-                        while(row = resultSet.fetchRow()){
-                            opts.push({
-                                name : str(row.label),
-                                value : {label: str(row.label), uri : str(row.resource) }
-                            });
-                        }
-                        list.setOptions(opts);
-                    }
-                }
-            });
+            getSuggestionsFromServer(word, list);
         },
         parseCaretWord : function(word,value){
             var span = jQuery('<span>&lt;'+value.label+'&gt;</span>');

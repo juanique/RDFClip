@@ -27,6 +27,11 @@ clips:KnowledgeDomain   rdf:type            rdfs:Class;
                         rdfs:subClassOf     rdfs:resource .
 
 #Properties
+clips:fileExtension rdfs:label          "extension";
+                    rdfs:domain         nie:InformationElement;
+                    rdfs:range          rdfs:Literal;
+                    clips:userLabel     "Extension" .
+
 clips:movieContent  rdfs:label          "movieContent";
                     rdfs:domain         nfo:Video;
                     rdfs:range          clips:Movie ;
@@ -66,3 +71,20 @@ clips:knowledgeDomain   rdfs:label          "knowledgeDomain";
                         rdfs:domain         nie:InformationElement;
                         rdfs:range          clips:KnowledgeDomain;
                         clips:userLabel     "Knowledge Domain" .
+
+clips:downloadLink  rdfs:label "downloadLink";
+                    rdfs:domain nie:InformationElement;
+                    rdfs:range rdfs:Resource;
+                    clips:userLabel "Download Link" .
+
+clips:directDownloadLink  rdfs:label "directDownloadLink";
+                    rdfs:domain nie:InformationElement;
+                    rdfs:range rdfs:Resource;
+                    clips:userLabel "Direct Download Link" ;
+                    rdfs:subPropertyOf clips:downloadLink .
+
+clips:indirectDownloadLink  rdfs:label "indirectDownloadLink";
+                    rdfs:domain nie:InformationElement;
+                    rdfs:range rdfs:Resource;
+                    clips:userLabel "Indirect Download Link" ;
+                    rdfs:subPropertyOf clips:downloadLink .

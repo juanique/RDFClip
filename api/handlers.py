@@ -1,10 +1,12 @@
 import settings
 
 from piston.handler import BaseHandler
-from models import RDFTriple
+from models import RDFTriple, RDFResource
 from base.connection import get_sparql_proxy
 
 from base.rdf import abbreviate, CLIP, RDFS
+from base.webservices import SimpleHandler
+from base.webservices import simple_handler_view
 
 import triplestore
 
@@ -18,18 +20,6 @@ class RDFTripleHandler(BaseHandler):
             triplestore.insert(data)
 
 
-class SimpleHandler:
-
-    def handle_request(self, request, *args, **kwargs):
-        method = request.META['REQUEST_METHOD']
-
-        if method not in self.allowed_methods:
-            raise
-
-        if method == 'POST':
-            return self.create(request,  **kwargs)
-        if method == 'GET':
-            return self.read(request,  **kwargs)
 
 class ResourceHandler(SimpleHandler):
     allowed_methods = ('POST', 'GET')
@@ -55,6 +45,8 @@ class ResourceHandler(SimpleHandler):
             output[pred] = { 'value' : obj, 'type' : ran }
 
         return output
+
+
 
 class ResourcePredicateHandler(SimpleHandler):
     allowed_methods = ('POST', 'GET')
@@ -97,3 +89,15 @@ class ResourcePredicateHandler(SimpleHandler):
         for (key, val) in aggregated.items():
             output.append(val)
         return output
+
+class ResourceSuggestionHandler(SimpleHandler):
+    allowed_methods = ('GET','POST')
+
+    def read(self, request, match):
+        results = RDFResource.objects.filter(label__startswith=match)[:10]
+        return [{ 'uri' : res.uri, 'label' : res.label} for res in results]
+
+
+def suggest_resource(request, match):
+    resource_suggest_handler = simple_handler_view(ResourceSuggestionHandler)
+    return resource_suggest_handler(request, match=match)

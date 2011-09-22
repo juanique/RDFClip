@@ -112,10 +112,12 @@ var DropDownList = Notifier.extend({
     hide : function(){
        var self = this;
        self.jUl.hide();
+       self.notifyAll('hide');
     },
     show : function(){
        var self = this;
        self.jUl.show();
+       self.notifyAll('show');
     }
 
 });

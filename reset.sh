@@ -68,7 +68,7 @@ else
         ./scripts/load_data.sh -g $schema_graph -d `pwd`/data/schema
     fi
     if [ $1 = "clip-load-data" ]; then
-        ./scripts/load_data.sh -g $data_graph -d `pwd`/data/data
+        ./scripts/load_data.sh -g $data_graph -d `pwd`/data/data/$2
     fi
     if [ $1 = "clip-clean-schema" ]; then
         ./scripts/load_data.sh -c $schema_graph
@@ -80,7 +80,7 @@ else
         ./scripts/load_data.sh -c -g $schema_graph -d `pwd`/data/schema
     fi
     if [ $1 = "clip-reset-data" ]; then
-        ./scripts/load_data.sh -c -g $data_graph -d `pwd`/data/data
+        ./scripts/load_data.sh -c -g $data_graph -d `pwd`/data/data/$2
     fi
     if [ $1 = "clip-clean" ]; then
         ./$0 clip-clean-data

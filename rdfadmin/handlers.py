@@ -22,7 +22,6 @@ class SavedQueryHandler(BaseHandler):
                 response = rc.DUPLICATE_ENTRY
                 return response
 
-
 class RecentQueryHandler(BaseHandler):
     allowed_methods = ('GET','PUT','DELETE','POST')
     model = models.RecentQuery

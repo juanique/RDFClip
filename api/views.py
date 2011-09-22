@@ -5,6 +5,7 @@ from base.decorators import json_view
 from django.template import Template
 import triplestore
 from base.connection import get_sparql_proxy
+from api.handlers import ResourceSuggestionHandler
 
 @csrf_exempt
 @json_view
@@ -41,14 +42,4 @@ def query(request,data):
 
 
     return proxy.query(sparql_template.render(context),output='json')
-
-def simple_handler_view(handler_class):
-    handler = handler_class()
-    methods_decorator = require_http_methods(list(handler.allowed_methods))
-
-    def output_view(request, *args, **kwargs):
-        return handler.handle_request(request, *args, **kwargs)
-
-    return methods_decorator(csrf_exempt(json_view(output_view)))
-
 

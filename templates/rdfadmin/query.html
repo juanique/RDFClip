@@ -17,6 +17,7 @@
         var explore_url = "{% url rdfadmin.views.explore %}";
         var recent_queries_url = "{% url rdfadmin.handlers.recent_query_resource%}"
         var saved_queries_url = "{% url rdfadmin.handlers.saved_query_resource%}"
+        var suggestions_url = "{% url api.handlers.suggest_resource 'match' %}"
     </script>
 {% endblock %}
 

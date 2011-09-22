@@ -10,11 +10,13 @@ from rdflib import Graph, Namespace, Literal
 from scrapper.utils import open_url
 
 NFO = Namespace('http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#')
+NIE = Namespace('http://www.semanticdesktop.org/ontologies/2007/01/19/nie#')
 RDFS = Namespace('http://www.w3.org/2000/01/rdf-schema#')
 RDF = Namespace('http://www.w3.org/1999/02/22-rdf-syntax-ns#')
 CLIP = Namespace('http://www.rdfclip.com/resource/')
 CLIPS = Namespace('http://www.rdfclip.com/schema#')
 XMLS = Namespace('http://www.w3.org/2001/XMLSchema#')
+UCHILE = Namespace('http://www.rdfclip.com/schema/uchile#')
 
 registered_namespaces = {
         'nfo': NFO,
@@ -23,6 +25,8 @@ registered_namespaces = {
         'clip' : CLIP,
         'clips' : CLIPS,
         'xmls' : XMLS,
+        'nie' : NIE,
+        'uchile' : UCHILE,
         }
 
 hachoir_mapping = {
@@ -52,7 +56,7 @@ class ResultValue:
 
     def __init__(self, dom):
         self.type = dom.tagName
-        self.value = str(dom.firstChild.data)
+        self.value = unicode(dom.firstChild.data)
 
 class ResultRow:
     

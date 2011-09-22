@@ -1,5 +1,8 @@
 from django.conf.urls.defaults import *
+
 from rdfadmin.handlers import saved_query_resource, recent_query_resource
+
+from base.webservices import  simple_handler_view
 import views
 
 

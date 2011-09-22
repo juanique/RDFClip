@@ -8,10 +8,17 @@ import settings
 
 class Command(BaseCommand):
     help = 'Loads schema data from virtuoso triple store to the relational database.'
+    args = '[graph_uri]'
+
 
     def handle(self, *args, **options):
+        if len(args) > 0:
+            graph = args[0]
+        else:
+            graph = settings.SCHEMA_GRAPH
+            
         proxy = get_sparql_proxy()
-        sparql = "SELECT DISTINCT ?res, ?label FROM <%s> WHERE { ?res <%s> ?label }" % (settings.SCHEMA_GRAPH, RDFS['label'])
+        sparql = "SELECT DISTINCT ?res, ?label FROM <%s> WHERE { ?res <%s> ?label }" % (graph, RDFS['label'])
 
         resultSet = proxy.query(sparql,output='ResultSet')
         while resultSet.can_read():

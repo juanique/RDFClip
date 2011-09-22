@@ -621,6 +621,14 @@ var MagicTextArea = Notifier.extend({
         self.updateMagicTextAreaDiv(true);
     },
 
+    adjustSuggestionList : function(){
+        var self = this;
+        var offset = self.jTa.offset();
+        offset.top += self.jTa.height() + 6;
+        self.suggestionList.jUl.css('position','absolute');
+        self.suggestionList.jUl.offset(offset);
+    },
+
     addInlineSuggest : function(options){
         var self = this;
 
@@ -655,10 +663,14 @@ var MagicTextArea = Notifier.extend({
             jQuery(document.body).click(function(e){
                 self.suggestionList.hide();
             });
-            var offset = self.jMagicDiv.offset();
-            offset.top += self.jMagicDiv.height();
-            jSuggest.css('position','absolute');
-            jSuggest.offset(offset);
+
+            self.adjustSuggestionList();
+
+            self.suggestionList.addListener({
+                show : function(){
+                    self.adjustSuggestionList();
+                }
+            });
         }
         
         self.addListener({
@@ -696,6 +708,7 @@ var MagicTextArea = Notifier.extend({
     adjustMagicDiv : function(){
         var self = this;
         placeOnTop(self.jTa,self.jWrap);
+        self.adjustSuggestionList();
     },
 
     value : function(){
