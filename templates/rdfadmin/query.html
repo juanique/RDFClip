@@ -52,8 +52,19 @@
             </ul>
         </div>
         <div class="container inline_float" id="mainContainer">
-            <label>EndPoint:</label><input type="text" onchange='loadGraphs();' value="{{sparql_endpoint}}" id="sparql_endpoint">
-            <textarea id="query">SELECT * WHERE {?s ?p ?o} LIMIT 20</textarea>
+            <div style='display: none'>
+                <label>EndPoint:</label><input type="text" onchange='loadGraphs();' value="{{sparql_endpoint}}" id="sparql_endpoint">
+            </div>
+            <textarea id="query">PREFIX uchile: <http://www.rdfclip.com/schema/uchile#> 
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+PREFIX clips: <http://www.rdfclip.com/schema#> 
+
+SELECT ?name, ?downloadLink WHERE {
+    ?file uchile:cursoOrigen ?curso .
+    ?curso uchile:codigoCurso "CC40A" .
+    ?file rdfs:label ?name .
+    ?file clips:indirectDownloadLink ?downloadLink 
+}</textarea>
             <button disabled onclick="executeQuery();">GO</button> 
             <span class="clickable" onclick="showTable()">Table&nbsp;</span>|&nbsp;
             <span onclick="showChart()" class="clickable">PieChart</span>&nbsp;|&nbsp;

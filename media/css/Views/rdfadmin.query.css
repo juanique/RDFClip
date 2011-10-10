@@ -133,5 +133,6 @@ tr.even td.sorting_1 {
     font-weight: bold;
 }
 
-
-
+td, li{
+    word-break: break-all;
+}

@@ -1,7 +1,7 @@
 start_dir=`pwd`
 temp_dir=/tmp/rdfadmin
 
-yes | sudo apt-get install python-beautifulsoup python-mechanize python-setuptools
+yes | sudo apt-get install python-beautifulsoup python-mechanize python-setuptools python-rdflib
 
 sudo rm -rf $temp_dir
 mkdir $temp_dir

@@ -20,8 +20,11 @@ function showChart(){
 }
 
 function getProxy(){
+    var endpoint = "http://localhost:8890/sparql";
+    return new RDF.SparqlProxy(proxy_url, endpoint)
+
+    endpoint = jQuery('#sparql_endpoint').val();
     return new RDF.AjaxEndpointConnection(jQuery('#sparql_endpoint').val());
-    return new RDF.SparqlProxy(proxy_url, jQuery('#sparql_endpoint').val());
 }
 
 function responseIsPlotable(response){
@@ -248,6 +251,7 @@ jQuery(document).ready(function(){
 
     // init lists
     loadRecentQueries();
+    magic.adjustMagicDiv();
     loadGraphs();
     loadSavedQueries();
 

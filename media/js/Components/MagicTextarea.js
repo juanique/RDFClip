@@ -211,7 +211,6 @@ var MagicTextArea = Notifier.extend({
             },
             "resize" : function(){
                 self.adjustMagicDiv();
-                self.refreshTags();
             }
         });
 
@@ -709,6 +708,7 @@ var MagicTextArea = Notifier.extend({
         var self = this;
         placeOnTop(self.jTa,self.jWrap);
         self.adjustSuggestionList();
+        self.refreshTags();
     },
 
     value : function(){
