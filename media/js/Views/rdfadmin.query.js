@@ -100,7 +100,8 @@ function executeQuery() {
                     showTable();
                 },
                 error : function(e){
-                    jQuery('#messages').html(e.statusText+" : <b>"+e.responseText+"</b>").show();
+                    var message = e.responseText.replace(/\n/g,"<br>");
+                    jQuery('#messages').html(e.statusText+" : <b>"+message+"</b>").show();
                     jQuery('#imgDiv').hide();
                 }
     });

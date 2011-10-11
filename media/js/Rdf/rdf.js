@@ -99,6 +99,10 @@ RDF.EndpointConnection = Class.extend({
             success : function(r){
                 if(params.format == "gvds")
                     eval("r = "+r);
+                if(r.statusText && r.statusText == "ERROR" && typeof params.error == "function"){
+                    params.error(r);
+                }
+
                 params.callback(r);
             },
             error : function(r){
