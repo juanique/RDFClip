@@ -171,6 +171,7 @@ jQuery(document).ready(function(){
         trigger : '@',
         refreshList : function(word, list){
             getSuggestionsFromServer(word, list);
+            //getSuggestionsFromEndpoint(word, list);
         },
         parseCaretWord : function(word,value){
             var span = jQuery('<span>&lt;'+value.label+'&gt;</span>');

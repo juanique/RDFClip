@@ -55,7 +55,11 @@
             <div style='display: none'>
                 <label>EndPoint:</label><input type="text" onchange='loadGraphs();' value="{{sparql_endpoint}}" id="sparql_endpoint">
             </div>
-            <textarea id="query">PREFIX uchile: <http://www.rdfclip.com/schema/uchile#> 
+            <textarea id="query"># Click "Go" to execute the following query.
+# It looks for the download links of study material for the course
+# CC40A - Algorithms and Data Structures
+                
+PREFIX uchile: <http://www.rdfclip.com/schema/uchile#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
 PREFIX clips: <http://www.rdfclip.com/schema#> 
 
