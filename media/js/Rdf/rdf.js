@@ -103,7 +103,13 @@ RDF.EndpointConnection = Class.extend({
                     params.error(r);
                 }
 
-                params.callback(r);
+                if(r.statusText == "ERROR"){
+                    if(typeof(params.error) == 'function'){
+                        params.error(r);
+                    }
+                }else{
+                    params.callback(r);
+                }
             },
             error : function(r){
                 if(typeof(params.error) == 'function')

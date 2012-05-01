@@ -81,7 +81,7 @@ function newPropertySelected(e){
 
         },
         error : function(e){
-            //console.debug(e);
+            console.log(e);
         }
     });
 }
