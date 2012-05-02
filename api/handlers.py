@@ -18,6 +18,18 @@ class RDFTripleHandler(BaseHandler):
         if request.content_type:
             triplestore.insert(data)
 
+class RDFResourceHandler(BaseHandler):
+    allowed_methods = ('GET')
+    model = RDFResource
+
+    def read(self, request):
+        f = {
+        }
+        for key in request.GET:
+            f[key] = request.GET[key]
+
+        return self.model.objects.filter(**f)[0:20]
+
 
 class ResourceHandler(SimpleHandler):
     allowed_methods = ('POST', 'GET')

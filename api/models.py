@@ -15,6 +15,7 @@ class RDFTriple(models.Model):
 class RDFResource(models.Model):
     uri     = models.CharField(max_length = 200, db_index = True)
     label   = models.CharField(max_length = 200, db_index = True, null=True)
+    type   = models.CharField(max_length = 200, db_index = True, null=True)
 
     def __str__(self):
         return self.label

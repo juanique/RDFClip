@@ -1,9 +1,8 @@
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import patterns
 from piston.resource import Resource
-from api.handlers import RDFTripleHandler, ResourceHandler, ResourcePredicateHandler, suggest_resource
+from api.handlers import RDFTripleHandler, ResourceHandler, ResourcePredicateHandler, suggest_resource, RDFResourceHandler
 from base.webservices import simple_handler_view
 
-import settings
 import views 
 
 class CsrfExemptResource(Resource):
@@ -12,6 +11,7 @@ class CsrfExemptResource(Resource):
         self.csrf_exempt = getattr(self.handler, 'csrf_exempt', True)
 
 rdftriple_resource = CsrfExemptResource(RDFTripleHandler)
+rdf_resource = CsrfExemptResource(RDFResourceHandler)
 
 urlpatterns = patterns('',
     (r'^resource/(?P<file_hash>[0-9A-Za-z]+)/$', simple_handler_view(ResourceHandler)),
@@ -20,4 +20,5 @@ urlpatterns = patterns('',
     (r'batch/',views.batch),
     (r'query/',views.query),
     (r'suggest/(?P<match>[0-9A-Za-z]*)$', suggest_resource),
+    (r'res/',rdf_resource),
 )
