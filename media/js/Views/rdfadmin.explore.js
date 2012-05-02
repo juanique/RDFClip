@@ -30,7 +30,7 @@ function initNewPropertySelector(){
 }
 
 function getCurrentUri(){
-    return window.location.toString();
+    return window.location.protocol + "//" + window.location.hostname + window.location.pathname
 }
 
 function getNewTriples(){
@@ -226,6 +226,7 @@ function formatResource(row, res, resLabel, prop){
 }
 
 function init(){
+    window.history.replaceState('Object', 'Title', getCurrentUri())
     var uri = jQuery.query.get("uri");
     var endpoint = jQuery.query.get("endpoint");
     var graph = jQuery.query.get("graph");
