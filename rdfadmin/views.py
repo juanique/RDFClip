@@ -1,14 +1,12 @@
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response
 from django.http import HttpResponse
-from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
-from scrapper.utils import open_url
-from base.connection import get_sparql_proxy
+from base.connection import get_sparql_proxy, get_triple_store
+import tempfile
 
 from models import RecentQuery
 
-import urllib
-import json
+import base64
 import settings
 
 from base.rdf import CLIP, RDFS, abbreviate
@@ -21,7 +19,18 @@ def home(request):
     })
     return render_to_response('rdfadmin/query.html', template_vars)
 
-def explore(request,file_hash):
+def explore(request, file_hash):
+    store = get_triple_store()
+    data = request.GET.get("data", False)
+
+    if data:
+        data = base64.b64decode(data)
+        store = get_triple_store()
+        tf_data = tempfile.NamedTemporaryFile(dir=settings.VIRTUOSO_WORK_DIR)
+        tf_data.write(data)
+        tf_data.flush()
+        store.load_file(tf_data.name, settings.DATA_GRAPH)
+
     sparql  = """
             prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
