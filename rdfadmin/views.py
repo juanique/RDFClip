@@ -2,11 +2,11 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.template import RequestContext
 from base.connection import get_sparql_proxy, get_triple_store
+from django.views.decorators.csrf import csrf_exempt
 import tempfile
 
 from models import RecentQuery
 
-import base64
 import settings
 
 from base.rdf import CLIP, RDFS, abbreviate
@@ -19,12 +19,13 @@ def home(request):
     })
     return render_to_response('rdfadmin/query.html', template_vars)
 
+
+@csrf_exempt
 def explore(request, file_hash):
     store = get_triple_store()
     data = request.GET.get("data", False)
 
     if data:
-        data = base64.b64decode(data)
         store = get_triple_store()
         tf_data = tempfile.NamedTemporaryFile(dir=settings.VIRTUOSO_WORK_DIR)
         tf_data.write(data)

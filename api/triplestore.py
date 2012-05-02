@@ -30,7 +30,7 @@ def insert(triples):
 
 
         g = new_triple(s,p,o,g)
-    store.insert(settings.DATA_GRAPH, g)
+    return store.insert(settings.DATA_GRAPH, g)
 
 def delete(triples):
     if not isinstance(triples,list):

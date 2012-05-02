@@ -1,12 +1,9 @@
 import tempfile
-import time
-import os
-import pdb
 import urllib
 
 from xml.dom import minidom
-from subprocess import call
-from rdflib import Graph, Namespace, Literal
+import subprocess
+from rdflib import Graph, Namespace
 from scrapper.utils import open_url
 
 NFO = Namespace('http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#')
@@ -161,15 +158,30 @@ class TripleStore:
         self.work_dir = work_dir
 
     def execute(self,script):
-        call(["isql-vt", self.hostname, self.username, self.password, script])
+        if self.hostname.startswith("http://"):
+            hostname = self.hostname[7:]
+        else:
+            hostname = self.hostname
+
+        cmd = ["isql-vt", hostname, self.username, self.password, script]
+        process = subprocess.Popen(cmd, stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE)
+
+        out, err = process.communicate()
+        if err:
+            return err
+        return out
+
 
     def load_file(self,filename, g):
         tf_query = tempfile.NamedTemporaryFile(dir=self.work_dir)
         virtuoso_command = "DB.DBA.RDF_LOAD_RDFXML_MT( file_to_string_output('%s'), '', '%s', 1 );" % (filename, g)
         tf_query.write(virtuoso_command)
         tf_query.flush()
-        self.execute(tf_query.name)
+        val = self.execute(tf_query.name)
         tf_query.close()
+
+        return val
 
     def query(self, q):
         tf_query = tempfile.NamedTemporaryFile(dir=self.work_dir)
@@ -188,13 +200,12 @@ class TripleStore:
             tf_data = tempfile.NamedTemporaryFile(dir=self.work_dir)
             tf_data.write(data.serialize(format='xml'))
             tf_data.flush()
-            self.load_file(tf_data.name, g)
+            return self.load_file(tf_data.name, g)
 
     def delete(self, g, triples, p = None, o = None):
         if p is not None:
             return self.delete([[triples,p,o]])
 
-        lines = []
         for t in triples:
             if (isinstance(t[2],str) or isinstance(t[2],unicode)) and t[2][0] != '<':
                 c = "FILTER regex(?o, '%s')" % t[2]
